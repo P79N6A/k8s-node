@@ -1,0 +1,50 @@
+{
+    "deployments":[
+      {
+        "name": "node2020-test",
+        "build": {
+          "enable":true,
+          "dockerfile": "Dockerfile"
+        },
+        "alert": {
+          "lark": {
+            "name": "",
+            "webhook": "https://open.feishu.cn/open-apis/bot/hook/d1b8ccaa1610439e90ab6b234161b570"
+          }
+        },  
+        "deploy": {
+          "enable":true,
+          "instances": 1,
+          "containers": [
+            {
+              "name": "node",
+              "commands": [
+                "/app/start_node.sh"
+              ],
+              "ports":[
+                "http:80"
+              ],
+              "resources": {
+                "cpu": 1.0,
+                "memory": 256
+              }
+            }
+          ],
+          "domains": [
+            {
+              "domain": "test-www.smartisan.com",
+              "locations": [
+                {
+                  "path": "/node/"
+                }
+              ]
+            }
+          ],
+          "ingressAnnotations":{
+            "nginx.ingress.kubernetes.io/proxy-read-timeout": "600"
+          }
+        }
+      }
+    ]
+  }
+  
